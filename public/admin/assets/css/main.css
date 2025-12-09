@@ -1,0 +1,88 @@
+.app-header {
+    top: 0px !important
+}
+
+.left-sidebar {
+    top: 0px !important;
+}
+
+.pt-wrapper {
+    padding-top: 70px;
+}
+
+.sidebar-nav ul .sidebar-item .first-level .sidebar-item:last-child {
+    margin-bottom: 0px !important;
+}
+
+.text-sm {
+    font-size: 10px !important;
+}
+
+.text-md {
+    font-size: 18px !important;
+}
+
+.text-lg {
+    font-size: 24px !important;
+}
+
+.text-xl {
+    font-size: 32px !important;
+}
+
+.badge {
+    text-transform: uppercase;
+}
+
+.fw-bold {
+    font-weight: bold !important;
+}
+
+.dashboard-item {
+  transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), 
+              box-shadow 0.35s ease;
+  transform: scale(1);
+}
+
+.dashboard-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.notification-badge {
+  top: 0.8rem !important;
+}
+
+.header-divider {
+  width: 1px;
+  height: 32px;
+  background-color: rgba(103, 117, 124, 0.25);
+}
+
+.truncate-250 {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.notification-badge {
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    line-height: 1;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    top: -10px !important;
+    left: 100% !important;
+    transform: translateX(-50%) !important;
+}
+
+.font-lg {
+    font-size: 24px !important;
+}

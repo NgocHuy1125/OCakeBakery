@@ -1,0 +1,70 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\ProductController;
+use App\Http\Controllers\Client\AuthController;
+use App\Http\Controllers\Client\ProfileController as ClientProfileController;
+use App\Http\Controllers\Client\PaymentController;
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminProductController;
+
+/* -------------------- ROUTER CLIENT -------------------- */
+Route::get('/', [ClientController::class, 'client_home']);
+Route::get('/contact', [ClientController::class, 'client_contact']);
+Route::get('/about-us', [ClientController::class, 'client_about']);
+Route::get('/promotions', [ClientController::class, 'client_promotions']);
+Route::get('/store', [ClientController::class, 'client_store']);
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/items/{item}', [CartController::class, 'update'])->name('cart.items.update');
+Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])->name('cart.items.destroy');
+Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+// Simplified checkout routes
+Route::get('/payment/qr', [PaymentController::class, 'qr'])->name('payment.qr');
+Route::view('/payment/success', 'pages.client.paymentSuccess');
+Route::view('/orders/{code}', 'pages.client.orderDetail');
+
+/* -------------------- ROUTER ADMIN -------------------- */
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+Route::get(('/admin/products/all'), [AdminProductController::class, 'all_products'])->name('admin.all.products');
+Route::get(('/admin/products/near-expired'), [AdminProductController::class, 'nearexpired_products'])->name('admin.near-expired.products');
+Route::get(('/admin/products/near-soldout'), [AdminProductController::class, 'nearsoldout_products'])->name('admin.near-soldout.products');
+
+Route::view('/admin/users', 'pages.admin.users')->name('admin.users');
+Route::view('/admin/orders', 'pages.admin.orders')->name('admin.orders');
+Route::view('/admin/promotions', 'pages.admin.promotions')->name('admin.promotions');
+
+/* -------------------- ROUTER AUTH -------------------- */
+Route::get(('/login'), [AuthController::class, 'showLoginForm'])->name('client.auth.login');
+Route::get(('/register'), [AuthController::class, 'showRegisterForm'])->name('client.auth.register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('client.auth.logout');
+
+Route::post(('/login'), [AuthController::class, 'processLogin'])->name('client.login.process');
+Route::post(('/register'), [AuthController::class, 'processRegister'])->name('client.register.process');
+
+/* -------------------- ROUTER CLIENT PROFILE -------------------- */
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ClientProfileController::class, 'home'])->name('profile.home');
+    Route::post('/profile', [ClientProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/addresses', [ClientProfileController::class, 'addresses'])->name('profile.addresses');
+    Route::post('/profile/addresses', [ClientProfileController::class, 'storeAddress'])->name('profile.addresses.store');
+    Route::delete('/profile/addresses/{address}', [ClientProfileController::class, 'deleteAddress'])->name('profile.addresses.delete');
+    Route::get('/profile/addresses/wards/{district}', [ClientProfileController::class, 'wards'])->name('profile.addresses.wards');
+    Route::get('/profile/orders', [\App\Http\Controllers\Client\OrderController::class, 'myOrders'])->name('profile.orders');
+
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+});
